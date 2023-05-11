@@ -16,10 +16,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_11_160143) do
 
   create_table "targets", force: :cascade do |t|
     t.bigint "topic_id", null: false
-    t.string "tittle"
-    t.float "radius"
-    t.float "lat"
-    t.float "lng"
+    t.string "title", null: false
+    t.float "radius", null: false
+    t.float "lat", null: false
+    t.float "lng", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["topic_id"], name: "index_targets_on_topic_id"
