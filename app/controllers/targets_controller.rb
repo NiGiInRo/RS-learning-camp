@@ -3,22 +3,12 @@ class TargetsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @targets = Target.all
-
-    render json: @targets
+    @target = current_user.targets
+    render json: @target
   end
 
   def show
     render json: @target
-  end
-
-  def show_current_user
-    if current_user
-      @target = Target.where(user_id: current_user.id)
-      render json: @target
-    else
-      render json: { message: "Login first"}, status: :unauthorized
-    end
   end
 
   def create
