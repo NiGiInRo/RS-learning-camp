@@ -28,7 +28,6 @@ class Users::SessionsController < Devise::SessionsController
   # end
   private
   def respond_with(resource, _opts = {})
-    p "USUARIO #{current_user.name}"
     return success
   end
   def respond_to_on_destroy
