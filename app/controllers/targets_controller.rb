@@ -1,10 +1,10 @@
 class TargetsController < ApplicationController
   before_action :set_target, only: %i[ show update destroy ]
+  before_action :authenticate_user!
 
   def index
-    @targets = Target.all
-
-    render json: @targets
+    @target = current_user.targets
+    render json: @target
   end
 
   def show
@@ -13,6 +13,7 @@ class TargetsController < ApplicationController
 
   def create
     @target = Target.new(target_params)
+    @target.user_id = current_user.id
 
     if @target.save
       render json: @target, status: :created
@@ -39,6 +40,6 @@ class TargetsController < ApplicationController
     end
 
     def target_params
-      params.require(:target).permit(:topic_id, :title, :radius, :lat, :lng)
+      params.require(:target).permit(:topic_id, :title, :radius, :lat, :lng, :user_id)
     end
 end
