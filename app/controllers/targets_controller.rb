@@ -15,14 +15,10 @@ class TargetsController < ApplicationController
     @target = Target.new(target_params)
     @target.user_id = current_user.id
 
-    if current_user.targets.count >= 3
-      render json: { message: "3 targets max per user"}, status: :unauthorized
+    if @target.save
+      render json: @target, status: :created
     else
-      if @target.save
-        render json: @target, status: :created
-      else
-        render json: @target.errors, status: :unprocessable_entity
-      end
+      render json: @target.errors, status: :unprocessable_entity
     end
   end
 
