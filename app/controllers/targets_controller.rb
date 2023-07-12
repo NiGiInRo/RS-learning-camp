@@ -16,6 +16,7 @@ class TargetsController < ApplicationController
     @target.user_id = current_user.id
 
     if @target.save
+      check_for_matches(@target)
       render json: @target, status: :created
     else
       render json: @target.errors, status: :unprocessable_entity
@@ -35,6 +36,23 @@ class TargetsController < ApplicationController
   end
 
   private
+
+    def check_for_matches(target)
+      matching_targets = Target.where(topic_id: target.topic_id)
+      #TODO
+      #-GEMA GEOKIT COMO CONFUGURARLA
+      #-card 6, se abre una conversacion cuando 2 usuarios hacen match!
+      matching_targets.each do |matching_target|
+        if matching_target != target
+          Match.create(
+            first_user_id: target.user_id,
+            second_user_id: matching_target.user_id,
+            target_id: target.id
+          )
+        end
+      end
+    end
+
     def set_target
       @target = Target.find(params[:id])
     end
