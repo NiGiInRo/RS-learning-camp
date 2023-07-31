@@ -16,7 +16,8 @@ class TargetsController < ApplicationController
     @target.user_id = current_user.id
 
     if @target.save
-      check_for_matches(@target) #Crea en la tabla Matches los registros necesarios, si encuenta targets en comun. 
+      TargetService.call(@target)
+      #check_for_matches(@target) #Crea en la tabla Matches los registros necesarios, si encuenta targets en comun. 
       render json: @target, status: :created
     else
       render json: @target.errors, status: :unprocessable_entity
@@ -36,7 +37,7 @@ class TargetsController < ApplicationController
   end
 
   private
-
+=begin
     def check_for_matches(target)
       matching_targets = Target.where(topic_id: target.topic_id)
       #TODO
@@ -52,7 +53,7 @@ class TargetsController < ApplicationController
         end
       end
     end
-
+=end
     def set_target
       @target = Target.find(params[:id])
     end
