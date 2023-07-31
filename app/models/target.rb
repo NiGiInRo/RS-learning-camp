@@ -1,4 +1,6 @@
 class Target < ApplicationRecord
+  acts_as_mappable :lat_column_name => :lat,
+                   :lng_column_name => :lng
   belongs_to :topic
   belongs_to :user
   has_many :matches

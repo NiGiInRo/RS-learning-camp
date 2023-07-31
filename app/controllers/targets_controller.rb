@@ -16,7 +16,7 @@ class TargetsController < ApplicationController
     @target.user_id = current_user.id
 
     if @target.save
-      check_for_matches(@target)
+      check_for_matches(@target) #Crea en la tabla Matches los registros necesarios, si encuenta targets en comun. 
       render json: @target, status: :created
     else
       render json: @target.errors, status: :unprocessable_entity
