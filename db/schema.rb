@@ -10,9 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_11_234615) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_31_204552) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "conversations", force: :cascade do |t|
+    t.bigint "target_id", null: false
+    t.bigint "first_user_id", null: false
+    t.bigint "second_user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["first_user_id"], name: "index_conversations_on_first_user_id"
+    t.index ["second_user_id"], name: "index_conversations_on_second_user_id"
+    t.index ["target_id"], name: "index_conversations_on_target_id"
+  end
 
   create_table "jwt_denylist", force: :cascade do |t|
     t.string "jti", null: false
@@ -29,6 +40,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_11_234615) do
     t.index ["first_user_id"], name: "index_matches_on_first_user_id"
     t.index ["second_user_id"], name: "index_matches_on_second_user_id"
     t.index ["target_id"], name: "index_matches_on_target_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "conversation_id", null: false
+    t.bigint "sender_id", null: false
+    t.bigint "receiver_id", null: false
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["conversation_id"], name: "index_messages_on_conversation_id"
+    t.index ["receiver_id"], name: "index_messages_on_receiver_id"
+    t.index ["sender_id"], name: "index_messages_on_sender_id"
   end
 
   create_table "targets", force: :cascade do |t|
@@ -65,9 +88,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_11_234615) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "conversations", "targets"
+  add_foreign_key "conversations", "users", column: "first_user_id"
+  add_foreign_key "conversations", "users", column: "second_user_id"
   add_foreign_key "matches", "targets"
   add_foreign_key "matches", "users", column: "first_user_id"
   add_foreign_key "matches", "users", column: "second_user_id"
+  add_foreign_key "messages", "conversations"
+  add_foreign_key "messages", "users", column: "receiver_id"
+  add_foreign_key "messages", "users", column: "sender_id"
   add_foreign_key "targets", "topics"
   add_foreign_key "targets", "users"
 end

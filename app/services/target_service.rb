@@ -9,13 +9,11 @@ class TargetService < ApplicationService
         p "matched_targets #{matched_targets.map{|a| a.id}}"
         if matched_targets
           matched_targets.each do |m|
-            Match.create(
-              first_user_id: @target.user_id,
-              second_user_id: m.user_id,
-              target_id: @target.id
-            )
+            Match.create(first_user_id: @target.user_id, second_user_id: m.user_id, target_id: @target.id)
+            conversation = Conversation.create(first_user_id: @target.user_id, second_user_id: m.user_id, target_id: @target.id)
+            conversation
+            Message.create(conversation_id: conversation.id, sender_id: @target.user_id, receiver_id: m.user_id, content: "hi!, we have a common Topic: '#{@target.topic.name}' and we are almost close, lets talk! ")
           end
         end
     end
-
 end

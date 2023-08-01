@@ -4,6 +4,7 @@ class Target < ApplicationRecord
   belongs_to :topic
   belongs_to :user
   has_many :matches, dependent: :destroy
+  has_many :conversations, dependent: :destroy
   validates :title, :radius, :lat, :lng, :topic_id,  presence: true
   validates :radius, numericality: { greater_than: 0 }
   
