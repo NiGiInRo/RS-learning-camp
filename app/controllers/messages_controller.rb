@@ -22,6 +22,8 @@ class MessagesController < ApplicationController
   # POST /messages
   def create
     @message = Message.new(message_params)
+    # @message.sender_id = current_user.id
+    # @message.conversation_id = current_conversation (preguntar a enzo)
 
     if @message.save
       redirect_to @message, notice: "Send"

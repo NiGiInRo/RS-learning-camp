@@ -15,14 +15,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_31_204552) do
   enable_extension "plpgsql"
 
   create_table "conversations", force: :cascade do |t|
-    t.bigint "target_id", null: false
+    t.bigint "match_id", null: false
     t.bigint "first_user_id", null: false
     t.bigint "second_user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["first_user_id"], name: "index_conversations_on_first_user_id"
+    t.index ["match_id"], name: "index_conversations_on_match_id"
     t.index ["second_user_id"], name: "index_conversations_on_second_user_id"
-    t.index ["target_id"], name: "index_conversations_on_target_id"
   end
 
   create_table "jwt_denylist", force: :cascade do |t|
@@ -88,7 +88,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_31_204552) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "conversations", "targets"
+  add_foreign_key "conversations", "matches"
   add_foreign_key "conversations", "users", column: "first_user_id"
   add_foreign_key "conversations", "users", column: "second_user_id"
   add_foreign_key "matches", "targets"
