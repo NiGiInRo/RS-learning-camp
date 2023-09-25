@@ -11,8 +11,7 @@ class TargetService < ApplicationService
           matched_targets.each do |m|
             match = Match.create(first_user_id: @target.user_id, second_user_id: m.user_id, target_id: @target.id)
             match
-            p "match #{match.id}"
-            conversation = Conversation.create(first_user_id: @target.user_id, second_user_id: m.user_id, match_id: match.id)
+            conversation = Conversation.create(first_user_id: @target.user_id, second_user_id: m.user_id, target_id: match.id)
             conversation
             Message.create(conversation_id: conversation.id, sender_id: @target.user_id, receiver_id: m.user_id, content: "hi!, we have a common Topic: '#{@target.topic.name}' and we are almost close, lets talk! ")
           end
